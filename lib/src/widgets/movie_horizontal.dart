@@ -3,41 +3,55 @@ import 'package:moviesapp/src/model/movies_model.dart';
 
 class MoviesHorizontalContainer extends StatelessWidget {
   final List<Movie> movies;
-  MoviesHorizontalContainer({@required this.movies});
-
+  final Function nextPages;
+  MoviesHorizontalContainer({@required this.movies, @required this.nextPages});
+  final _pageController =
+      new PageController(initialPage: 1, viewportFraction: 0.25);
   @override
   Widget build(BuildContext context) {
     final _screenSize = MediaQuery.of(context).size;
+
+    _pageController.addListener(() {
+      if (_pageController.position.pixels >=
+          _pageController.position.maxScrollExtent - 200) {
+        nextPages();
+      }
+    });
+
     return Container(
-      height: _screenSize.height * 0.20,
-      child: PageView(
-        controller: PageController(initialPage: 1, viewportFraction: 0.3),
-        children: _cards(),
-      ),
+      height: _screenSize.height * 0.2,
+      child: PageView.builder(
+          pageSnapping: false,
+          controller: _pageController,
+          itemCount: movies.length,
+          itemBuilder: (context, i) => _card(movies[i])),
     );
   }
 
-  List<Widget> _cards() {
-    return movies.map((movie) {
-      return Container(
-        // margin: EdgeInsets.only(right: 5.0),
-        child: Column(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Container(
-                color: Colors.white,
-                child: FadeInImage(
-                  image: NetworkImage(movie.getPostImage()),
-                  placeholder: AssetImage('assets/images/no-image.jpg'),
-                  fit: BoxFit.cover,
-                  height: 140.0,
-                ),
+  Widget _card(Movie movie) {
+    final card = Container(
+      margin: EdgeInsets.only(right: 15.0),
+      child: Column(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Container(
+              color: Colors.white,
+              child: FadeInImage(
+                image: NetworkImage(movie.getPostImage()),
+                placeholder: AssetImage('assets/images/no-image.jpg'),
+                fit: BoxFit.cover,
+                height: 140.0,
               ),
-            )
-          ],
-        ),
-      );
-    }).toList();
+            ),
+          )
+        ],
+      ),
+    );
+
+    return GestureDetector(
+      onTap: () {},
+      child: card,
+    );
   }
 }
