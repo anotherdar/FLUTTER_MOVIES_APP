@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviesapp/src/providers/movies_provider.dart';
+import 'package:moviesapp/src/search/search_delegate.dart';
 import 'package:moviesapp/src/widgets/card_swiper_widget.dart';
 import 'package:moviesapp/src/widgets/movie_horizontal.dart';
 
@@ -21,11 +22,12 @@ class HomePage extends StatelessWidget {
                 Icons.search,
                 color: Colors.white,
               ),
-              onPressed: () {},
+              onPressed: () {
+                showSearch(context: context, delegate: DataSearch());
+              },
             )
           ],
           backgroundColor: Colors.grey[900],
-          elevation: 10.0,
         ),
         body: Container(
           color: Colors.grey[900],
@@ -63,8 +65,10 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.only(left: 20.0),
             child: Text(
               'Populares',
-              style: TextStyle(color: Colors.white),
-              // style: Theme.of(context).textTheme.subhead,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w700),
             ),
           ),
           SizedBox(

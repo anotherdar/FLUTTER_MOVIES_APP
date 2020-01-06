@@ -62,7 +62,7 @@ class MoviesProvider {
   }
 
   Future<List<Actor>> getCast(String movieID) async {
-    var url = Uri.https(_url, '3/movie/$movieID/credits',
+    final url = Uri.https(_url, '3/movie/$movieID/credits',
         {'api_key': _apiKey, 'language': _language});
 
     final res = await http.get(url);
@@ -70,5 +70,11 @@ class MoviesProvider {
     final cast = new Cast.jsonList(data['cast']);
 
     return cast.actors;
+  }
+
+  Future<List<Movie>> searchMovies(String query) async {
+    final url = Uri.https(_url, '3/search/movie/',
+        {'api_key': _apiKey, 'language': _language, 'query': query});
+    return await _responses(url);
   }
 }
