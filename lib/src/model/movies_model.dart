@@ -11,6 +11,7 @@ class Movies {
 }
 
 class Movie {
+  String uniqueID;
   double popularity;
   int voteCount;
   bool video;
@@ -52,7 +53,7 @@ class Movie {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     originalLanguage = json['original_language'];
-    originalTitle = json['original_litle'];
+    originalTitle = json['original_title'];
     genreIds = json['genre_ids'].cast<int>();
     title = json['title'];
     voteAverage = json['vote_average'] / 1;
@@ -65,6 +66,14 @@ class Movie {
       return 'https://pngimage.net/wp-content/uploads/2018/06/no-image-available-icon-png-8.png';
     } else {
       return 'https://image.tmdb.org/t/p/w500/$posterPath';
+    }
+  }
+
+  getBackgrounImage() {
+    if (posterPath == null) {
+      return 'https://pngimage.net/wp-content/uploads/2018/06/no-image-available-icon-png-8.png';
+    } else {
+      return 'https://image.tmdb.org/t/p/w500/$backdropPath';
     }
   }
 }

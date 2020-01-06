@@ -24,24 +24,29 @@ class MoviesHorizontalContainer extends StatelessWidget {
           pageSnapping: false,
           controller: _pageController,
           itemCount: movies.length,
-          itemBuilder: (context, i) => _card(movies[i])),
+          itemBuilder: (context, i) => _card(context, movies[i])),
     );
   }
 
-  Widget _card(Movie movie) {
+  Widget _card(BuildContext context, Movie movie) {
+    movie.uniqueID = '${movie.id}-pageviewcard';
+
     final card = Container(
       margin: EdgeInsets.only(right: 15.0),
       child: Column(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child: Container(
-              color: Colors.white,
-              child: FadeInImage(
-                image: NetworkImage(movie.getPostImage()),
-                placeholder: AssetImage('assets/images/no-image.jpg'),
-                fit: BoxFit.cover,
-                height: 140.0,
+          Hero(
+            tag: movie.uniqueID,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(3.0),
+              child: Container(
+                color: Colors.white,
+                child: FadeInImage(
+                  image: NetworkImage(movie.getPostImage()),
+                  placeholder: AssetImage('assets/images/no-image.jpg'),
+                  fit: BoxFit.cover,
+                  height: 140.0,
+                ),
               ),
             ),
           )
@@ -50,7 +55,9 @@ class MoviesHorizontalContainer extends StatelessWidget {
     );
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, 'detail', arguments: movie);
+      },
       child: card,
     );
   }
